@@ -12,3 +12,5 @@ K2 = ta.barssince(sell[1])
 // then adding the following to the final variable
 finalBuy = buy and K1 > O2
 finalSell = sell and K2 > O1
+
+// Simple, yet not fool proof way of filtering, one more way will be uploaded eventually.
