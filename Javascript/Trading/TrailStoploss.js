@@ -1,4 +1,5 @@
 // Requires TraderLogin Module
+// Still being worked on, please be patient.
 
 let trailActivationPrice;
 let trailPrice;
