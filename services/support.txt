@@ -1,5 +1,0 @@
-We offer support in all of the below:
-
-- NodeJS/Server Side Javascript
-- Client Side Javascript
-- API development/API usage
