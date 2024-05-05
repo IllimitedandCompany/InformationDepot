@@ -1,6 +1,7 @@
 # InformationDepot
-Repo used to inform interested parties on progress, projects, releases and enterprise relevant information.
+Repo intended to assist in front end and back end development.
 
-## On the making, be patient.. Methodology under consideration.
+Currently includes NodeJS, Javascript, PineScript.
 
-### Loading categories... =)
+By T.
+From ILLIMITED&COMPANY
