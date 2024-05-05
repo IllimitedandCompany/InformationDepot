@@ -1,6 +1,6 @@
 // Requires TraderLogin Module
 // Still being worked on, please be patient.
-// If your scalping with a BUY to SELL order basis closing opposite side possibly before stoploss, you'll need to set traling to false on new entry hook call to reset the priceTrailer.
+// If your scalping with a BUY to SELL order basis closing opposite side possibly before stoploss, you'll need to set traling to false and last price to undefined on new entry hook call to reset the priceTrailer.
 
 // Currently only working for a single trade trail, more than one trade will not work as expected.
 
@@ -38,7 +38,7 @@ async function priceTrailer(){
 
         if(trailing){
           
-          if(y[i].currentPrice <= trailActivationPrice && lastPrice > trailPrice){
+          if(y[i].currentPrice <= trailActivationPrice && lastPrice > trailPrice && lastPrice != undefined){
             lastPrice = trailPrice
             trailing = true
           }
