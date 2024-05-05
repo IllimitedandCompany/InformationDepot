@@ -2,6 +2,8 @@
 // Still being worked on, please be patient.
 // If your scalping with a BUY to SELL order basis closing opposite side possibly before stoploss, you'll need to set traling to false on new entry hook call to reset the priceTrailer.
 
+// Currently only working for a single trade trail, more than one trade will not work as expected.
+
 let trailActivationPrice;
 let trailPrice;
 let lastPrice = undefined;
