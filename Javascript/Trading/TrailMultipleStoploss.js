@@ -1,3 +1,5 @@
+// If personalized logs is not being used, modify 'logMessage...' for console.log(...)
+
 let trailActivationPrice;
 let trailPrice;
 
