@@ -26,7 +26,6 @@ async function p1(){
       let type = y[i].type;
 
       if (type === "POSITION_TYPE_SELL"){
-        side = "SELL"
         trailActivationPrice = y[i].openPrice - trailPoints
         trailPrice = y[i].currentPrice + trailOffsetPips
         let order;
@@ -49,7 +48,6 @@ async function p1(){
             waitArray.push(id)
         }     
       }else if (type === "POSITION_TYPE_BUY"){
-        side = "BUY"
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
         let order;
@@ -94,7 +92,6 @@ async function p2(){
         let orderId = waitArray[z]
         if(orderId === id){
           if(type === "POSITION_TYPE_BUY"){
-            side = "BUY"
             trailActivationPrice = y[i].openPrice + trailPoints
             trailPrice = y[i].currentPrice - trailOffsetPips
     
@@ -111,7 +108,6 @@ async function p2(){
               }
             }
           }else if(type === "POSITION_TYPE_SELL"){
-            side = "SELL"
             trailActivationPrice = y[i].openPrice - trailPoints
             trailPrice = y[i].currentPrice + trailOffsetPips
     
@@ -154,7 +150,6 @@ async function p3(){
         let lastPrice = trailArray[z].split(':')[1]
         if(idMatch === id){
           if(type === "POSITION_TYPE_BUY"){
-            side = "BUY"
             trailActivationPrice = y[i].openPrice + trailPoints
             trailPrice = y[i].currentPrice - trailOffsetPips
     
@@ -176,7 +171,6 @@ async function p3(){
               logMessage.info('Order closed by trailing.')
             }
           }else if(type === "POSITION_TYPE_SELL"){
-            side = "SELL"
             trailActivationPrice = y[i].openPrice - trailPoints
             trailPrice = y[i].currentPrice + trailOffsetPips
     
