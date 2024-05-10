@@ -33,7 +33,7 @@ async function p1(){
           let idMatch = waitArray[z].split(':')[0]
           if(idMatch === id){
             present = true
-            order = id + ":" + side + ":" + trailActivationPrice
+            order = id
             break
           }
         }
@@ -51,7 +51,7 @@ async function p1(){
           let idMatch = waitArray[z].split(':')[0]
           if(idMatch === id){
             present = true
-            order = id + ":" + side + ":" + trailActivationPrice
+            order = id
             break
           }
         }
@@ -80,7 +80,7 @@ async function p2(){
       let id = y[i].id
       let type = y[i].type;
       for(let z = 0; z < waitArray.length;z++){
-        let orderId = waitArray[z].split(':')[0]
+        let orderId = waitArray[z]
         if(orderId === id){
           if(type === "POSITION_TYPE_BUY"){
             side = "BUY"
