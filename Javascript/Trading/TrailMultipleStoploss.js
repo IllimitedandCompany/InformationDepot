@@ -11,6 +11,11 @@ let recArray = []
 const trailOffsetPips = 50;
 const trailPoints = 75; 
 
+function returnArrLen(){
+  let len = waitArray.length;
+  return len
+}
+
 async function p1(){
   let y = []
   try{
@@ -32,7 +37,7 @@ async function p1(){
         trailActivationPrice = y[i].openPrice - trailPoints
         trailPrice = y[i].currentPrice + trailOffsetPips
         let order;
-        if(waitArray.length != 0){
+        if(returnArrLen() != 0){
             for(let a = 0; a < recArray.length;a++){
               let oldIdMatch = recArray[a]
               if(oldIdMatch === id){
@@ -64,7 +69,7 @@ async function p1(){
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
         let order;
-        if(waitArray.length != 0){
+        if(returnArrLen() != 0){
           for(let a = 0; a < recArray.length;a++){
               let oldIdMatch = recArray[a]
               if(oldIdMatch === id){
