@@ -30,7 +30,7 @@ async function p1(){
         trailPrice = y[i].currentPrice + trailOffsetPips
         let order;
         for(let z = 0; z < waitArray.length;z++){
-          let idMatch = waitArray[z].split(':')[0]
+          let idMatch = waitArray[z]
           if(idMatch === id){
             present = true
             order = id
@@ -48,7 +48,7 @@ async function p1(){
         trailPrice = y[i].currentPrice - trailOffsetPips
         let order;
         for(let z = 0; z < waitArray.length;z++){
-          let idMatch = waitArray[z].split(':')[0]
+          let idMatch = waitArray[z]
           if(idMatch === id){
             present = true
             order = id
