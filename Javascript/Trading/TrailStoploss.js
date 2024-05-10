@@ -43,7 +43,7 @@ async function priceTrailer(){
             trailing = true
           }
 
-          if(y[i].currentPrice <= trailActivationPrice && y[i].currentPrice > lastPrice && trailing){
+          if(y[i].currentPrice > lastPrice && trailing){
             try{
               connection.closePosition(y[i].id)
             }catch(err){
@@ -73,7 +73,7 @@ async function priceTrailer(){
             lastPrice = trailPrice
           }
 
-          if(y[i].currentPrice >= trailActivationPrice && y[i].currentPrice < lastPrice && trailing){
+          if(y[i].currentPrice < lastPrice && trailing){
             try{
               connection.closePosition(y[i].id)
             }catch(err){
