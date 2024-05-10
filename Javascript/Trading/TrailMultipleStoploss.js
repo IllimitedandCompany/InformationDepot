@@ -120,7 +120,7 @@ async function p2(){
     
             if(y[i].currentPrice >= trailActivationPrice){
               logMessage.info("New order being trailed.")
-              let orderUpdate = id + ":" + lastPrice
+              let orderUpdate = id + ":" + trailPrice
               trailArray.push(orderUpdate)
 
               for(let z = 0; z < waitArray.length;z++){
@@ -136,7 +136,7 @@ async function p2(){
     
             if(y[i].currentPrice <= trailActivationPrice){
               logMessage.info("New order being trailed.")
-              let orderUpdate = id + ":" + lastPrice
+              let orderUpdate = id + ":" + trailPrice
               trailArray.push(orderUpdate)
 
               for(let z = 0; z < waitArray.length;z++){
