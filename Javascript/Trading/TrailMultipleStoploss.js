@@ -31,7 +31,7 @@ async function p1(){
         let order;
         if(waitArray.length != 0){
             for(let z = 0; z < waitArray.length;z++){
-            let idMatch = waitArray[z]
+                let idMatch = waitArray[z]
                 if(idMatch === id){
                     present = true
                     order = id
@@ -54,7 +54,7 @@ async function p1(){
         let order;
         if(waitArray.length != 0){
             for(let z = 0; z < waitArray.length;z++){
-            let idMatch = waitArray[z]
+                let idMatch = waitArray[z]
                 if(idMatch === id){
                     present = true
                     order = id
@@ -103,7 +103,7 @@ async function p2(){
               trailArray.push(orderUpdate)
 
               for(let z = 0; z < waitArray.length;z++){
-                let idMatch = waitArray[z].split(':')[0]
+                let idMatch = waitArray[z]
                 if(idMatch === id){
                   waitArray.splice(z, 1)
                 }
@@ -120,7 +120,7 @@ async function p2(){
               trailArray.push(orderUpdate)
 
               for(let z = 0; z < waitArray.length;z++){
-                let idMatch = waitArray[z].split(':')[0]
+                let idMatch = waitArray[z]
                 if(idMatch === id){
                   waitArray.splice(z, 1)
                 }
