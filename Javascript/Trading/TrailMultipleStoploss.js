@@ -29,37 +29,47 @@ async function p1(){
         trailActivationPrice = y[i].openPrice - trailPoints
         trailPrice = y[i].currentPrice + trailOffsetPips
         let order;
-        for(let z = 0; z < waitArray.length;z++){
-          let idMatch = waitArray[z]
-          if(idMatch === id){
-            present = true
-            order = id
-            break
-          }
-        }
+        if(waitArray.length === 0){
+            for(let z = 0; z < waitArray.length;z++){
+            let idMatch = waitArray[z]
+                if(idMatch === id){
+                    present = true
+                    order = id
+                    break
+                }
+            }
 
-        if(!present){
-          logMessage.info("New order found.")
-          waitArray.push(order)
-        }         
+            if(!present){
+                logMessage.info("New order found.")
+                waitArray.push(order)
+            }
+        }else{
+            logMessage.info("New order found.")
+            waitArray.push(id)
+        }     
       }else if (type === "POSITION_TYPE_BUY"){
         side = "BUY"
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
         let order;
-        for(let z = 0; z < waitArray.length;z++){
-          let idMatch = waitArray[z]
-          if(idMatch === id){
-            present = true
-            order = id
-            break
-          }
-        }
+        if(waitArray.length === 0){
+            for(let z = 0; z < waitArray.length;z++){
+            let idMatch = waitArray[z]
+                if(idMatch === id){
+                    present = true
+                    order = id
+                    break
+                }
+            }
 
-        if(!present){
-          logMessage.info("New order found.")
-          waitArray.push(order)
-        }         
+            if(!present){
+                logMessage.info("New order found.")
+                waitArray.push(order)
+            }
+        }else{
+            logMessage.info("New order found.")
+            waitArray.push(id)
+        }
       }
     }
   }
