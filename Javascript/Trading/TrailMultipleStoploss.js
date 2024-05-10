@@ -52,8 +52,8 @@ async function p1(){
 
           if(!present && !oldPresent){
               logMessage.info("New order found.")
-              waitArray.push(order)
-              recArray.push(order)
+              waitArray.push(id)
+              recArray.push(id)
           }
         }else{
             logMessage.info("New order found.")
@@ -84,7 +84,7 @@ async function p1(){
 
             if(!present && !oldPresent){
                 logMessage.info("New order found.")
-                waitArray.push(order)
+                waitArray.push(id)
                 recArray.push(id)
             }
         }else{
