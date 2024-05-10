@@ -29,7 +29,7 @@ async function p1(){
         trailActivationPrice = y[i].openPrice - trailPoints
         trailPrice = y[i].currentPrice + trailOffsetPips
         let order;
-        if(waitArray.length === 0){
+        if(waitArray.length != 0){
             for(let z = 0; z < waitArray.length;z++){
             let idMatch = waitArray[z]
                 if(idMatch === id){
@@ -52,7 +52,7 @@ async function p1(){
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
         let order;
-        if(waitArray.length === 0){
+        if(waitArray.length != 0){
             for(let z = 0; z < waitArray.length;z++){
             let idMatch = waitArray[z]
                 if(idMatch === id){
