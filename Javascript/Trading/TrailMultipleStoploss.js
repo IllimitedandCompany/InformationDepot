@@ -6,12 +6,12 @@ let trailPrice;
 
 let trailArray = []
 let waitArray = []
+let recArray = []
 
 const trailOffsetPips = 50;
 const trailPoints = 75; 
 
 async function p1(){
-  let present = false
   let y = []
   try{
     y = await terminalState.positions
@@ -22,6 +22,9 @@ async function p1(){
 
   if(y.length > 0){
     for(let i = 0; i<y.length; i++){
+      let present = false
+      let oldPresent = false
+
       let id = y[i].id
       let type = y[i].type;
 
@@ -30,28 +33,46 @@ async function p1(){
         trailPrice = y[i].currentPrice + trailOffsetPips
         let order;
         if(waitArray.length != 0){
-            for(let z = 0; z < waitArray.length;z++){
-                let idMatch = waitArray[z]
-                if(idMatch === id){
-                    present = true
-                    order = id
-                    break
-                }
-            }
+            for(let a = 0; a < recArray.length;a++){
+              let oldIdMatch = recArray[a]
+              if(oldIdMatch === id){
+                  oldPresent = true
+                  break
+              }
+          }
 
-            if(!present){
-                logMessage.info("New order found.")
-                waitArray.push(order)
-            }
+          for(let z = 0; z < waitArray.length;z++){
+              let idMatch = waitArray[z]
+              if(idMatch === id){
+                  present = true
+                  order = id
+                  break
+              }
+          }
+
+          if(!present && !oldPresent){
+              logMessage.info("New order found.")
+              waitArray.push(order)
+              recArray.push(order)
+          }
         }else{
             logMessage.info("New order found.")
             waitArray.push(id)
+            recArray.push(id)
         }     
       }else if (type === "POSITION_TYPE_BUY"){
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
         let order;
         if(waitArray.length != 0){
+          for(let a = 0; a < recArray.length;a++){
+              let oldIdMatch = recArray[a]
+              if(oldIdMatch === id){
+                  oldPresent = true
+                  break
+              }
+          }
+          
             for(let z = 0; z < waitArray.length;z++){
                 let idMatch = waitArray[z]
                 if(idMatch === id){
@@ -61,13 +82,15 @@ async function p1(){
                 }
             }
 
-            if(!present){
+            if(!present && !oldPresent){
                 logMessage.info("New order found.")
                 waitArray.push(order)
+                recArray.push(id)
             }
         }else{
             logMessage.info("New order found.")
             waitArray.push(id)
+            recArray.push(id)
         }
       }
     }
