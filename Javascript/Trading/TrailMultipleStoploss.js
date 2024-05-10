@@ -152,7 +152,7 @@ async function p3(){
               let orderUpdate = id + ":" + trailPrice
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
-            }else if(y[i].currentPrice > lastPrice){
+            }else if(y[i].currentPrice < lastPrice){
               try{
                 connection.closePosition(y[i].id)
               }catch(err){
