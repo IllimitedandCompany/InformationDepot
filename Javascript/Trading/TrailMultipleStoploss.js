@@ -72,7 +72,6 @@ async function p1(){
       if (type === "POSITION_TYPE_SELL"){
         trailActivationPrice = y[i].openPrice - trailPoints
         trailPrice = y[i].currentPrice + trailOffsetPips
-        let order;
         if(returnArrLen() != 0){
             for(let a = 0; a < recArray.length;a++){
               let oldIdMatch = recArray[a]
@@ -86,7 +85,6 @@ async function p1(){
               let idMatch = waitArray[z]
               if(idMatch === id){
                   present = true
-                  order = id
                   break
               }
           }
@@ -104,7 +102,6 @@ async function p1(){
       }else if (type === "POSITION_TYPE_BUY"){
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
-        let order;
         if(returnArrLen() != 0){
           for(let a = 0; a < recArray.length;a++){
               let oldIdMatch = recArray[a]
