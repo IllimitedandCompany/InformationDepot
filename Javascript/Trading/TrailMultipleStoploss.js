@@ -123,7 +123,7 @@ async function p2(){
 
             if(y[i].currentPrice >= trailActivationPrice && !beingTrailed){
               logMessage.info("New order being trailed.")
-              orderUpdate = id + ":" + trailPrice
+              orderUpdate = id + ":" + returnTrailPrice(y[i], type)
               logMessage.debug(`${orderUpdate} being trailed`)
               trailArray.push(orderUpdate)
               waitArray.splice(z, 1)
@@ -141,7 +141,7 @@ async function p2(){
 
             if(y[i].currentPrice <= trailActivationPrice && !beingTrailed){
               logMessage.info("New order being trailed.")
-              orderUpdate = id + ":" + trailPrice
+              orderUpdate = id + ":" + returnTrailPrice(y[i], type)
               logMessage.debug(`${orderUpdate} being trailed`)
               trailArray.push(orderUpdate)
               waitArray.splice(z, 1)
