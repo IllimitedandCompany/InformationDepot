@@ -1,5 +1,7 @@
 // If personalized logs is not being used, modify 'logMessage...' for console.log(...)
-// Will be uploading array checks for live orders sometime soon.
+
+
+// 11/05 - Not fully tested, please be patient
 
 let trailActivationPrice;
 let trailPrice;
