@@ -237,7 +237,7 @@ async function p3(){
 }
 
 function checkCloses(){
-  if(waitArray.length = 0){
+  if(waitArray.length === 0){
     logMessage.info('No live orders.')
   }else{
     for(let z = 0; z < waitArray.length;z++){
@@ -245,13 +245,12 @@ function checkCloses(){
     }
   }
   console.log("\n")
-  if(trailArray.length = 0){
+  if(trailArray.length === 0){
     logMessage.info('No orders being trailed.')
   }else{
     for(let a = 0; a < trailArray.length;a++){
       console.log("Trail Array: ", trailArray[a])
     }
-    console.log("\n")
   }
 }
 
