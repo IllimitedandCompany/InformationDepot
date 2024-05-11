@@ -194,7 +194,6 @@ async function p3(){
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
 
-              trailPrice = y[i].openPrice;
             }else if(y[i].currentPrice < lastPrice){
               try{
                 connection.closePosition(y[i].id)
@@ -216,8 +215,7 @@ async function p3(){
               let orderUpdate = id + ":" + trailPrice
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
-
-              trailPrice = y[i].openPrice;
+              
             }else if(y[i].currentPrice > lastPrice){
               try{
                 connection.closePosition(y[i].id)
