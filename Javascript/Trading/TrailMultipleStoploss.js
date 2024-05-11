@@ -29,10 +29,12 @@ async function cleanArrays(){
       await reconnect()
       y = await terminalState.positions
     }
+
     for(let a = 0; a<waitArray.length; a++){
       for(let i = 0; i<y.length; i++){
         if(waitArray[a] === y[i].id){
             orderPresent = true
+            break
         }
         if(!orderPresent){
             waitArray.splice(a, 1)
@@ -44,6 +46,7 @@ async function cleanArrays(){
         for(let i = 0; i<y.length; i++){
             if(trailArray[a] === y[i].id){
                 orderTrailPresent = true
+                break
             }
             if(!orderTrailPresent){
                 trailArray.splice(a, 1)
