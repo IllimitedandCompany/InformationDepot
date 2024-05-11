@@ -8,8 +8,8 @@ let trailArray = []
 let waitArray = []
 let recArray = []
 
-const trailOffsetPips = 50;
-const trailPoints = 75; 
+const trailOffsetPips = 40;
+const trailPoints = 50; 
 
 function returnWaitArrLen(){
   let len = waitArray.length;
@@ -26,7 +26,7 @@ async function cleanArrays(){
   }
 
   if(waitArray.length > 0){
-    for(let a = waitArray.length - 1; a >= 0; a--){
+    for(let a = waitArray.length-1; a >= 0; a--){
         let orderPresent = false;
         for(let i = 0; i < y.length; i++){
             if(waitArray[a] === y[i].id){
@@ -42,7 +42,7 @@ async function cleanArrays(){
 
 
   if(trailArray.length > 0){
-      for(let a = trailArray.length - 1; a >= 0; a--){
+      for(let a = trailArray.length-1; a >= 0; a--){
           let orderTrailPresent = false;
           for(let i = 0; i < y.length; i++){
               if(Number(trailArray[a].split(':')[0]) === Number(y[i].id)){
