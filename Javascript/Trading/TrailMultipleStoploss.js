@@ -2,7 +2,6 @@
 // Will log errors on init until traderLogin has finished start up.
 
 let trailActivationPrice;
-let trailPrice;
 
 let trailArray = []
 let waitArray = []
@@ -14,6 +13,16 @@ const trailPoints = 50;
 function returnWaitArrLen(){
   let len = waitArray.length;
   return len
+}
+
+function returnTrailPrice(y, side){
+  let trailPrice;
+  if(side === "POSITION_TYPE_BUY"){
+    trailPrice = y.currentPrice - trailOffsetPips
+  }else if("POSITION_TYPE_SELL"){
+    trailPrice = y.currentPrice + trailOffsetPips
+  }
+  return trailPrice
 }
 
 async function cleanArrays(){
@@ -39,7 +48,6 @@ async function cleanArrays(){
         }
     }
   }
-
 
   if(trailArray.length > 0){
       for(let a = trailArray.length-1; a >= 0; a--){
@@ -156,16 +164,6 @@ async function p2(){
 
 let cy = 0;
 
-function returnTrailPrice(side){
-  let trailPrice;
-  if(side === "POSITION_TYPE_BUY"){
-    trailPrice = y.currentPrice - trailOffsetPips
-  }else if("POSITION_TYPE_SELL"){
-    trailPrice = y.currentPrice + trailOffsetPips
-  }
-  return trailPrice
-}
-
 async function p3(){
   let y = []
   try{
@@ -196,14 +194,14 @@ async function p3(){
 
             }else if(y[i].currentPrice < lastPrice){
               try{
-                connection.closePosition(y[i].id)
+                connection.closePosition(id)
               }catch(err){
                 console.log("ERROR CLOSING TRADE, ", err, "ERROR CLOSING TRADE!")
-                connection.closePosition(y[i].id)
+                connection.closePosition(id)
               }
   
               trailArray.splice(z, 1)
-              removeClosed(y[i].id)
+              removeClosed(id)
               logMessage.info('Order closed by trailing.')
             }
           }else if(type === "POSITION_TYPE_SELL"){
@@ -218,14 +216,14 @@ async function p3(){
 
             }else if(y[i].currentPrice > lastPrice){
               try{
-                connection.closePosition(y[i].id)
+                connection.closePosition(id)
               }catch(err){
                 console.log("ERROR CLOSING TRADE, ", err, "ERROR CLOSING TRADE!")
-                connection.closePosition(y[i].id)
+                connection.closePosition(id)
               }
               
               trailArray.splice(z, 1)
-              removeClosed(y[i].id)
+              removeClosed(id)
               logMessage.info('Order closed by trailing.')
             }
           }
