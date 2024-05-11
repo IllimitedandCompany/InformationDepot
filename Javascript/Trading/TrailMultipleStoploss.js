@@ -186,7 +186,7 @@ async function p3(){
         if(idMatch === id){
           if(type === "POSITION_TYPE_BUY"){
             trailActivationPrice = y[i].openPrice + trailPoints
-            let trail = returnTrailPrice(type)
+            let trail = returnTrailPrice(y[i], type)
 
             if(trail > lastPrice){
               logMessage.success("Trailing updated.")
@@ -208,14 +208,14 @@ async function p3(){
             }
           }else if(type === "POSITION_TYPE_SELL"){
             trailActivationPrice = y[i].openPrice - trailPoints
-            let trail = returnTrailPrice(type)
+            let trail = returnTrailPrice(y[i], type)
 
             if(trail < lastPrice){
               logMessage.success("Trailing updated.")
               let orderUpdate = id + ":" + trailPrice
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
-              
+
             }else if(y[i].currentPrice > lastPrice){
               try{
                 connection.closePosition(y[i].id)
