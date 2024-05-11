@@ -177,6 +177,7 @@ async function p3(){
     for(let i = 0; i<y.length; i++){
       let id = Number(y[i].id)
       let type = y[i].type;
+      let trail = returnTrailPrice(y[i], type)
 
       for(let z = 0; z < trailArray.length;z++){
         let idMatch = Number(trailArray[z].split(':')[0])
@@ -184,7 +185,7 @@ async function p3(){
         if(idMatch === id){
           if(type === "POSITION_TYPE_BUY"){
             trailActivationPrice = y[i].openPrice + trailPoints
-            let trail = returnTrailPrice(y[i], type)
+            
 
             if(trail > lastPrice){
               logMessage.success("Trailing updated.")
@@ -206,7 +207,6 @@ async function p3(){
             }
           }else if(type === "POSITION_TYPE_SELL"){
             trailActivationPrice = y[i].openPrice - trailPoints
-            let trail = returnTrailPrice(y[i], type)
 
             if(trail < lastPrice){
               logMessage.success("Trailing updated.")
