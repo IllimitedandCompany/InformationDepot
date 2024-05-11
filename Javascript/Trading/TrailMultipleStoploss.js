@@ -160,6 +160,7 @@ async function p2(){
           }
         }
       }
+      trailPrice = 0;
     }
   }
   await p3()
