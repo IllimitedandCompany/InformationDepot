@@ -159,9 +159,9 @@ let cy = 0;
 function returnTrailPrice(side){
   let trailPrice;
   if(side === "POSITION_TYPE_BUY"){
-    trailPrice = y[i].currentPrice - trailOffsetPips
+    trailPrice = y.currentPrice - trailOffsetPips
   }else if("POSITION_TYPE_SELL"){
-    trailPrice = y[i].currentPrice + trailOffsetPips
+    trailPrice = y.currentPrice + trailOffsetPips
   }
   return trailPrice
 }
