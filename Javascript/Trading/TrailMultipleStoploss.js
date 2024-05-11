@@ -16,41 +16,41 @@ function returnWaitArrLen(){
   return len
 }
 
-async function cleanArrays() {
+async function cleanArrays(){
   let y = [];
-  try {
+  try{
       y = await terminalState.positions;
-  } catch (error) {
+  }catch(error){
       await reconnect();
       y = await terminalState.positions;
   }
 
-  if (waitArray.length > 0) {
-    for (let a = waitArray.length - 1; a >= 0; a--) {
+  if(waitArray.length > 0){
+    for(let a = waitArray.length - 1; a >= 0; a--){
         let orderPresent = false;
-        for (let i = 0; i < y.length; i++) {
-            if (waitArray[a] === y[i].id) {
+        for(let i = 0; i < y.length; i++){
+            if(waitArray[a] === y[i].id){
                 orderPresent = true;
                 break;
             }
         }
-        if (!orderPresent) {
+        if(!orderPresent){
             waitArray.splice(a, 1);
         }
     }
   }
 
 
-  if (trailArray.length > 0) {
-      for (let a = trailArray.length - 1; a >= 0; a--) {
+  if(trailArray.length > 0){
+      for(let a = trailArray.length - 1; a >= 0; a--){
           let orderTrailPresent = false;
-          for (let i = 0; i < y.length; i++) {
-              if (Number(trailArray[a].split(':')[0]) === Number(y[i].id)) {
+          for(let i = 0; i < y.length; i++){
+              if(Number(trailArray[a].split(':')[0]) === Number(y[i].id)){
                   orderTrailPresent = true;
                   break;
               }
           }
-          if (!orderTrailPresent) {
+          if(!orderTrailPresent){
               trailArray.splice(a, 1);
           }
       }
@@ -59,88 +59,45 @@ async function cleanArrays() {
 
 
 async function p1(){
-  let y = []
-  try{
-    y = await terminalState.positions
-  }catch(error){
-    await reconnect()
-    y = await terminalState.positions
-  }
+    try{
+      y = await terminalState.positions
+    }catch(error){
+      await reconnect()
+      y = await terminalState.positions
+    }
+        
+    for(let i = 0; i < y.length; i++){
+        let id = y[i].id;
+        let type = y[i].type;
+        let present = false;
+        let oldPresent = recArray.includes(id);
 
-  if(y.length > 0){
-    for(let i = 0; i<y.length; i++){
-      let present = false
-      let oldPresent = false
+        if(type === "POSITION_TYPE_SELL"){
+            trailActivationPrice = y[i].openPrice - trailPoints;
+            trailPrice = y[i].currentPrice + trailOffsetPips;
+        }else if (type === "POSITION_TYPE_BUY"){
+            trailActivationPrice = y[i].openPrice + trailPoints;
+            trailPrice = y[i].currentPrice - trailOffsetPips;
+        }
 
-      let id = y[i].id
-      let type = y[i].type;
-
-      if (type === "POSITION_TYPE_SELL"){
-        trailActivationPrice = y[i].openPrice - trailPoints
-        trailPrice = y[i].currentPrice + trailOffsetPips
-        if(returnWaitArrLen() != 0){
-            for(let a = 0; a < recArray.length;a++){
-              let oldIdMatch = recArray[a]
-              if(oldIdMatch === id){
-                  oldPresent = true
-                  break
-              }
-          }
-
-          for(let z = 0; z < waitArray.length;z++){
-              let idMatch = waitArray[z]
-              if(idMatch === id){
-                  present = true
-                  break
-              }
-          }
-
-          if(!present && !oldPresent){
-              logMessage.info("New order found.")
-              waitArray.push(id)
-              recArray.push(id)
-          }
-        }else{
-            logMessage.info("New order found.")
-            waitArray.push(id)
-            recArray.push(id)
-        }     
-      }else if (type === "POSITION_TYPE_BUY"){
-        trailActivationPrice = y[i].openPrice + trailPoints
-        trailPrice = y[i].currentPrice - trailOffsetPips
-        if(returnWaitArrLen() != 0){
-          for(let a = 0; a < recArray.length;a++){
-              let oldIdMatch = recArray[a]
-              if(oldIdMatch === id){
-                  oldPresent = true
-                  break
-              }
-          }
-          
-            for(let z = 0; z < waitArray.length;z++){
-                let idMatch = waitArray[z]
-                if(idMatch === id){
-                    present = true
-                    order = id
-                    break
+        if(returnWaitArrLen() !== 0){
+            for (let z = 0; z < waitArray.length; z++) {
+                if (waitArray[z] === id) {
+                    present = true;
+                    break;
                 }
             }
-
-            if(!present && !oldPresent){
-                logMessage.info("New order found.")
-                waitArray.push(id)
-                recArray.push(id)
-            }
-        }else{
-            logMessage.info("New order found.")
-            waitArray.push(id)
-            recArray.push(id)
         }
-      }
+
+        if(!present && !oldPresent){
+            logMessage.info("New order found.");
+            waitArray.push(id);
+            recArray.push(id);
+        }
     }
-  }
-  await p2()
+    await p2();
 }
+
 
 async function p2(){
   let y = []
