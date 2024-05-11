@@ -1,5 +1,5 @@
 // If personalized logs is not being used, modify 'logMessage...' for console.log(...)
-// Will be uploading array checks for live orders sometime soon.
+// Will log errors on init until traderLogin has finished start up.
 
 let trailActivationPrice;
 let trailPrice;
@@ -11,7 +11,7 @@ let recArray = []
 const trailOffsetPips = 50;
 const trailPoints = 75; 
 
-function returnArrLen(){
+function returnWaitArrLen(){
   let len = waitArray.length;
   return len
 }
@@ -78,7 +78,7 @@ async function p1(){
       if (type === "POSITION_TYPE_SELL"){
         trailActivationPrice = y[i].openPrice - trailPoints
         trailPrice = y[i].currentPrice + trailOffsetPips
-        if(returnArrLen() != 0){
+        if(returnWaitArrLen() != 0){
             for(let a = 0; a < recArray.length;a++){
               let oldIdMatch = recArray[a]
               if(oldIdMatch === id){
@@ -108,7 +108,7 @@ async function p1(){
       }else if (type === "POSITION_TYPE_BUY"){
         trailActivationPrice = y[i].openPrice + trailPoints
         trailPrice = y[i].currentPrice - trailOffsetPips
-        if(returnArrLen() != 0){
+        if(returnWaitArrLen() != 0){
           for(let a = 0; a < recArray.length;a++){
               let oldIdMatch = recArray[a]
               if(oldIdMatch === id){
