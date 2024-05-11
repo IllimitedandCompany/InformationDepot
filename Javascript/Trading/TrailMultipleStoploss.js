@@ -16,6 +16,40 @@ function returnArrLen(){
   return len
 }
 
+async function cleanArrays(){
+    let orderPresent = false
+    let orderTrailPresent = false
+
+    let y = []
+    try{
+      y = await terminalState.positions
+    }catch(error){
+      await reconnect()
+      y = await terminalState.positions
+    }
+    for(let a = 0; a<waitArray.length; a++){
+      for(let i = 0; i<y.length; i++){
+        if(waitArray[a] === y[i].id){
+            orderPresent = true
+        }
+        if(!orderPresent){
+            waitArray.splice(a, 1)
+        }
+      }
+    }
+
+    for(let a = 0; a<trailArray.length; a++){
+        for(let i = 0; i<y.length; i++){
+            if(trailArray[a] === y[i].id){
+                orderTrailPresent = true
+            }
+            if(!orderTrailPresent){
+                trailArray.splice(a, 1)
+            }
+        }
+    }
+}
+
 async function p1(){
   let y = []
   try{
@@ -227,3 +261,4 @@ async function p3(){
 }
 
 setInterval(p1, 500) // P1 requires P2 and P3.
+setInterval(cleanArrays, 500) // Cleans old orders from arrays. (Record array currently not included)
