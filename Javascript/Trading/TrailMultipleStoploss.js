@@ -190,7 +190,7 @@ async function p3(){
 
             if(trail > lastPrice){
               logMessage.success("Trailing updated.")
-              let orderUpdate = id + ":" + trailPrice
+              let orderUpdate = id + ":" + trail
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
 
@@ -212,7 +212,7 @@ async function p3(){
 
             if(trail < lastPrice){
               logMessage.success("Trailing updated.")
-              let orderUpdate = id + ":" + trailPrice
+              let orderUpdate = id + ":" + trail
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
 
