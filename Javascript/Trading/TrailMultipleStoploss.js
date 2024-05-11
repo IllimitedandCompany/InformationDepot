@@ -68,17 +68,8 @@ async function p1(){
         
     for(let i = 0; i < y.length; i++){
         let id = y[i].id;
-        let type = y[i].type;
         let present = false;
         let oldPresent = recArray.includes(id);
-
-        if(type === "POSITION_TYPE_SELL"){
-            trailActivationPrice = y[i].openPrice - trailPoints;
-            trailPrice = y[i].currentPrice + trailOffsetPips;
-        }else if (type === "POSITION_TYPE_BUY"){
-            trailActivationPrice = y[i].openPrice + trailPoints;
-            trailPrice = y[i].currentPrice - trailOffsetPips;
-        }
 
         if(returnWaitArrLen() !== 0){
             for (let z = 0; z < waitArray.length; z++) {
@@ -121,7 +112,6 @@ async function p2(){
         if(orderId === id){
           if(type === "POSITION_TYPE_BUY"){
             trailActivationPrice = y[i].openPrice + trailPoints
-            trailPrice = y[i].currentPrice - trailOffsetPips
     
             for(let x = 0; x < trailArray.length;x++){
               let orderTrailId = Number(trailArray[x].split(':')[0])
@@ -140,7 +130,6 @@ async function p2(){
             }
           }else if(type === "POSITION_TYPE_SELL"){
             trailActivationPrice = y[i].openPrice - trailPoints
-            trailPrice = y[i].currentPrice + trailOffsetPips
     
             for(let x = 0; x < trailArray.length;x++){
               let orderTrailId = Number(trailArray[x].split(':')[0])
@@ -160,13 +149,22 @@ async function p2(){
           }
         }
       }
-      trailPrice = 0;
     }
   }
   await p3()
 }
 
 let cy = 0;
+
+function returnTrailPrice(side){
+  let trailPrice;
+  if(side === "POSITION_TYPE_BUY"){
+    trailPrice = y[i].currentPrice - trailOffsetPips
+  }else if("POSITION_TYPE_SELL"){
+    trailPrice = y[i].currentPrice + trailOffsetPips
+  }
+  return trailPrice
+}
 
 async function p3(){
   let y = []
@@ -188,13 +186,15 @@ async function p3(){
         if(idMatch === id){
           if(type === "POSITION_TYPE_BUY"){
             trailActivationPrice = y[i].openPrice + trailPoints
-            trailPrice = y[i].currentPrice - trailOffsetPips
-    
-            if(trailPrice > lastPrice){
+            let trail = returnTrailPrice(type)
+
+            if(trail > lastPrice){
               logMessage.success("Trailing updated.")
               let orderUpdate = id + ":" + trailPrice
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
+
+              trailPrice = y[i].openPrice;
             }else if(y[i].currentPrice < lastPrice){
               try{
                 connection.closePosition(y[i].id)
@@ -209,13 +209,15 @@ async function p3(){
             }
           }else if(type === "POSITION_TYPE_SELL"){
             trailActivationPrice = y[i].openPrice - trailPoints
-            trailPrice = y[i].currentPrice + trailOffsetPips
-    
-            if(trailPrice < lastPrice){
+            let trail = returnTrailPrice(type)
+
+            if(trail < lastPrice){
               logMessage.success("Trailing updated.")
               let orderUpdate = id + ":" + trailPrice
               trailArray.splice(z, 1)
               trailArray.push(orderUpdate)
+
+              trailPrice = y[i].openPrice;
             }else if(y[i].currentPrice > lastPrice){
               try{
                 connection.closePosition(y[i].id)
