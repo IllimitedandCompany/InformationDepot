@@ -1,7 +1,5 @@
 // If personalized logs is not being used, modify 'logMessage...' for console.log(...)
-
-
-// 11/05 - Not fully tested, please be patient 
+// Will be uploading array checks for live orders sometime soon.
 
 let trailActivationPrice;
 let trailPrice;
@@ -18,42 +16,47 @@ function returnArrLen(){
   return len
 }
 
-async function cleanArrays(){
-    let orderPresent = false
-    let orderTrailPresent = false
+async function cleanArrays() {
+  let y = [];
+  try {
+      y = await terminalState.positions;
+  } catch (error) {
+      await reconnect();
+      y = await terminalState.positions;
+  }
 
-    let y = []
-    try{
-      y = await terminalState.positions
-    }catch(error){
-      await reconnect()
-      y = await terminalState.positions
+  if (waitArray.length > 0) {
+    for (let a = waitArray.length - 1; a >= 0; a--) {
+        let orderPresent = false;
+        for (let i = 0; i < y.length; i++) {
+            if (waitArray[a] === y[i].id) {
+                orderPresent = true;
+                break;
+            }
+        }
+        if (!orderPresent) {
+            waitArray.splice(a, 1);
+        }
     }
+  }
 
-    for(let a = 0; a<waitArray.length; a++){
-      for(let i = 0; i<y.length; i++){
-        if(waitArray[a] === y[i].id){
-            orderPresent = true
-            break
-        }
-        if(!orderPresent){
-            waitArray.splice(a, 1)
-        }
+
+  if (trailArray.length > 0) {
+      for (let a = trailArray.length - 1; a >= 0; a--) {
+          let orderTrailPresent = false;
+          for (let i = 0; i < y.length; i++) {
+              if (Number(trailArray[a].split(':')[0]) === Number(y[i].id)) {
+                  orderTrailPresent = true;
+                  break;
+              }
+          }
+          if (!orderTrailPresent) {
+              trailArray.splice(a, 1);
+          }
       }
-    }
-
-    for(let a = 0; a<trailArray.length; a++){
-        for(let i = 0; i<y.length; i++){
-            if(trailArray[a] === y[i].id){
-                orderTrailPresent = true
-                break
-            }
-            if(!orderTrailPresent){
-                trailArray.splice(a, 1)
-            }
-        }
-    }
+  }
 }
+
 
 async function p1(){
   let y = []
@@ -136,7 +139,7 @@ async function p1(){
       }
     }
   }
-  p2()
+  await p2()
 }
 
 async function p2(){
@@ -148,52 +151,64 @@ async function p2(){
     y = await terminalState.positions
   }
 
+  let orderUpdate;
+  let beingTrailed;
+
   if(y.length > 0){
     for(let i = 0; i<y.length; i++){
-      let id = y[i].id
+      let id = Number(y[i].id)
       let type = y[i].type;
+      beingTrailed = false;
       for(let z = 0; z < waitArray.length;z++){
-        let orderId = waitArray[z]
+        let orderId = Number(waitArray[z])
         if(orderId === id){
           if(type === "POSITION_TYPE_BUY"){
             trailActivationPrice = y[i].openPrice + trailPoints
             trailPrice = y[i].currentPrice - trailOffsetPips
     
-            if(y[i].currentPrice >= trailActivationPrice){
-              logMessage.info("New order being trailed.")
-              let orderUpdate = id + ":" + trailPrice
-              trailArray.push(orderUpdate)
-
-              for(let z = 0; z < waitArray.length;z++){
-                let idMatch = waitArray[z]
-                if(idMatch === id){
-                  waitArray.splice(z, 1)
-                }
+            for(let x = 0; x < trailArray.length;x++){
+              let orderTrailId = Number(trailArray[x].split(':')[0])
+              if(orderTrailId === orderId){
+                beingTrailed = true
+                break
               }
+            }
+
+            if(y[i].currentPrice >= trailActivationPrice && !beingTrailed){
+              logMessage.info("New order being trailed.")
+              orderUpdate = id + ":" + trailPrice
+              logMessage.debug(`${orderUpdate} being trailed`)
+              trailArray.push(orderUpdate)
+              waitArray.splice(z, 1)
             }
           }else if(type === "POSITION_TYPE_SELL"){
             trailActivationPrice = y[i].openPrice - trailPoints
             trailPrice = y[i].currentPrice + trailOffsetPips
     
-            if(y[i].currentPrice <= trailActivationPrice){
-              logMessage.info("New order being trailed.")
-              let orderUpdate = id + ":" + trailPrice
-              trailArray.push(orderUpdate)
-
-              for(let z = 0; z < waitArray.length;z++){
-                let idMatch = waitArray[z]
-                if(idMatch === id){
-                  waitArray.splice(z, 1)
-                }
+            for(let x = 0; x < trailArray.length;x++){
+              let orderTrailId = Number(trailArray[x].split(':')[0])
+              if(orderTrailId === orderId){
+                beingTrailed = true
+                break
               }
+            }
+
+            if(y[i].currentPrice <= trailActivationPrice && !beingTrailed){
+              logMessage.info("New order being trailed.")
+              orderUpdate = id + ":" + trailPrice
+              logMessage.debug(`${orderUpdate} being trailed`)
+              trailArray.push(orderUpdate)
+              waitArray.splice(z, 1)
             }
           }
         }
       }
     }
   }
-  p3()
+  await p3()
 }
+
+let cy = 0;
 
 async function p3(){
   let y = []
@@ -206,12 +221,12 @@ async function p3(){
 
   if(y.length > 0){
     for(let i = 0; i<y.length; i++){
-      let id = y[i].id
+      let id = Number(y[i].id)
       let type = y[i].type;
 
       for(let z = 0; z < trailArray.length;z++){
-        let idMatch = trailArray[z].split(':')[0]
-        let lastPrice = trailArray[z].split(':')[1]
+        let idMatch = Number(trailArray[z].split(':')[0])
+        let lastPrice = Number(trailArray[z].split(':')[1])
         if(idMatch === id){
           if(type === "POSITION_TYPE_BUY"){
             trailActivationPrice = y[i].openPrice + trailPoints
@@ -260,7 +275,29 @@ async function p3(){
       }
     }
   }
+  cy += 1
+  logMessage.debug(`Cycle ${cy}`)
+}
+
+function checkCloses(){
+  if(waitArray.length = 0){
+    logMessage.info('No live orders.')
+  }else{
+    for(let z = 0; z < waitArray.length;z++){
+      console.log("Wait Array: ", waitArray[z])
+    }
+  }
+  console.log("\n")
+  if(trailArray.length = 0){
+    logMessage.info('No orders being trailed.')
+  }else{
+    for(let a = 0; a < trailArray.length;a++){
+      console.log("Trail Array: ", trailArray[a])
+    }
+    console.log("\n")
+  }
 }
 
 setInterval(p1, 500) // P1 requires P2 and P3.
 setInterval(cleanArrays, 500) // Cleans old orders from arrays. (Record array currently not included)
+setInterval(checkCloses, 5000) // Logs the arrays for inspection.
