@@ -1,7 +1,7 @@
 // If personalized logs is not being used, modify 'logMessage...' for console.log(...)
 
 
-// 11/05 - Not fully tested, please be patient
+// 11/05 - Not fully tested, please be patient 
 
 let trailActivationPrice;
 let trailPrice;
