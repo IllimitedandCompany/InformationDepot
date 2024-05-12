@@ -17,11 +17,13 @@ function returnWaitArrLen(){
 
 function returnTrailPrice(y, side){
   let trailPrice;
+
   if(side === "POSITION_TYPE_BUY"){
-    trailPrice = y.currentPrice - trailOffsetPips
+    trailPrice = y - trailOffsetPips
   }else if("POSITION_TYPE_SELL"){
-    trailPrice = y.currentPrice + trailOffsetPips
+    trailPrice = y + trailOffsetPips
   }
+  
   return trailPrice
 }
 
@@ -38,7 +40,7 @@ async function cleanArrays(){
     for(let a = waitArray.length-1; a >= 0; a--){
         let orderPresent = false;
         for(let i = 0; i < y.length; i++){
-            if(waitArray[a] === y[i].id){
+            if(Number(waitArray[a]) === Number(y[i].id)){
                 orderPresent = true;
                 break;
             }
@@ -131,8 +133,7 @@ async function p2(){
 
             if(y[i].currentPrice >= trailActivationPrice && !beingTrailed){
               logMessage.info("New order being trailed.")
-              orderUpdate = id + ":" + returnTrailPrice(y[i], type)
-              logMessage.debug(`${orderUpdate} being trailed`)
+              orderUpdate = id + ":" + returnTrailPrice(y[i].currentPrice, type)
               trailArray.push(orderUpdate)
               waitArray.splice(z, 1)
             }
@@ -149,8 +150,7 @@ async function p2(){
 
             if(y[i].currentPrice <= trailActivationPrice && !beingTrailed){
               logMessage.info("New order being trailed.")
-              orderUpdate = id + ":" + returnTrailPrice(y[i], type)
-              logMessage.debug(`${orderUpdate} being trailed`)
+              orderUpdate = id + ":" + returnTrailPrice(y[i].currentPrice, type)
               trailArray.push(orderUpdate)
               waitArray.splice(z, 1)
             }
@@ -173,24 +173,25 @@ async function p3(){
     y = await terminalState.positions
   }
 
+  let trail;
+
   if(y.length > 0){
     for(let i = 0; i<y.length; i++){
-      let id = Number(y[i].id)
+      let id = y[i].id
       let type = y[i].type;
-      let trail = returnTrailPrice(y[i], type)
-
+      trail = returnTrailPrice(y[i].currentPrice, type)
+      
       for(let z = 0; z < trailArray.length;z++){
-        let idMatch = Number(trailArray[z].split(':')[0])
+        let idMatch = trailArray[z].split(':')[0]
         let lastPrice = Number(trailArray[z].split(':')[1])
         if(idMatch === id){
           if(type === "POSITION_TYPE_BUY"){
-            trailActivationPrice = y[i].openPrice + trailPoints
-            
 
             if(trail > lastPrice){
+              trailArray.splice(z, 1)
               logMessage.success("Trailing updated.")
               let orderUpdate = id + ":" + trail
-              trailArray.splice(z, 1)
+              
               trailArray.push(orderUpdate)
 
             }else if(y[i].currentPrice < lastPrice){
@@ -206,7 +207,6 @@ async function p3(){
               logMessage.info('Order closed by trailing.')
             }
           }else if(type === "POSITION_TYPE_SELL"){
-            trailActivationPrice = y[i].openPrice - trailPoints
 
             if(trail < lastPrice){
               logMessage.success("Trailing updated.")
@@ -237,7 +237,7 @@ async function p3(){
 
 function checkCloses(){
   if(waitArray.length === 0){
-    logMessage.info('No live orders.')
+    logMessage.info('No orders waiting.')
   }else{
     for(let z = 0; z < waitArray.length;z++){
       console.log("Wait Array: ", waitArray[z])
