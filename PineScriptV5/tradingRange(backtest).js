@@ -36,3 +36,5 @@ if inDateRange
     
     if sellExitSignal
         strategy.close("short")
+
+(BOTH METHODS MAY RELY IN HAVING BACKTESTING FUNCTIONALITIES ACTIVATED THROUGH PREMIUM PLANS)
