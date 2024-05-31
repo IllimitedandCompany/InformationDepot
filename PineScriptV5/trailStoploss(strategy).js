@@ -1,5 +1,5 @@
 // Not fully reliable to expect MT5 trailer will work exactly as the strategy tester from TradingView, 
-// prices on TV update every 5 seconds, fluctuations only account for high/low/close possibly not fully matching.
+// prices on TV update every 5 seconds, fluctuations will not match 100% of the time.
 
 if buyCondition
     strategy.entry("BUY", strategy.long, qty=0.1, oca_name="BUY")
